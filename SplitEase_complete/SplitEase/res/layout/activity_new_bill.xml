@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F4F0">
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:colorFilter="#333333"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="New bill"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"
+            android:gravity="center"
+            android:background="@drawable/chip_light_green"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Save"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#1B5E3B"
+            android:background="@drawable/chip_light_green"
+            android:stateListAnimator="@null"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Bill title -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Bill title" android:textSize="12sp" android:textColor="#888888"
+                android:background="@drawable/chip_light_green" android:paddingStart="10dp"
+                android:paddingEnd="10dp" android:paddingTop="3dp" android:paddingBottom="3dp"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/etBillTitle"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@drawable/input_border_active"
+                android:padding="14dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"
+                android:hint="e.g. Pizza night"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Total amount -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Total amount" android:textSize="12sp" android:textColor="#888888"
+                android:layout_marginBottom="8dp"/>
+
+            <EditText
+                android:id="@+id/etAmount"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="@drawable/input_border"
+                android:padding="14dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#1B5E3B"
+                android:inputType="numberDecimal"
+                android:hint="₱0"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Category chips -->
+            <View android:layout_width="40dp" android:layout_height="3dp"
+                android:background="#DDDDDD" android:layout_marginBottom="12dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp">
+
+                <androidx.cardview.widget.CardView android:id="@+id/chipFood"
+                    android:layout_width="wrap_content" android:layout_height="34dp"
+                    app:cardCornerRadius="17dp" app:cardBackgroundColor="#1B5E3B"
+                    app:cardElevation="0dp" android:layout_marginEnd="8dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                        android:text="🍕 food" android:textColor="#FFFFFF" android:textSize="13sp"
+                        android:gravity="center" android:paddingStart="14dp" android:paddingEnd="14dp"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView android:id="@+id/chipTranspo"
+                    android:layout_width="wrap_content" android:layout_height="34dp"
+                    app:cardCornerRadius="17dp" app:cardBackgroundColor="#E8F5E9"
+                    app:cardElevation="0dp" android:layout_marginEnd="8dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                        android:text="🚗 transpo" android:textColor="#555555" android:textSize="13sp"
+                        android:gravity="center" android:paddingStart="14dp" android:paddingEnd="14dp"/>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView android:id="@+id/chipStay"
+                    android:layout_width="wrap_content" android:layout_height="34dp"
+                    app:cardCornerRadius="17dp" app:cardBackgroundColor="#E8F5E9"
+                    app:cardElevation="0dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                        android:text="🏠 stay" android:textColor="#555555" android:textSize="13sp"
+                        android:gravity="center" android:paddingStart="14dp" android:paddingEnd="14dp"/>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView android:id="@+id/chipFun"
+                android:layout_width="wrap_content" android:layout_height="34dp"
+                app:cardCornerRadius="17dp" app:cardBackgroundColor="#E8F5E9"
+                app:cardElevation="0dp" android:layout_marginBottom="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                    android:text="🎮 fun" android:textColor="#555555" android:textSize="13sp"
+                    android:gravity="center" android:paddingStart="14dp" android:paddingEnd="14dp"/>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Members -->
+            <View android:layout_width="40dp" android:layout_height="3dp"
+                android:background="#DDDDDD" android:layout_marginBottom="12dp"/>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupMembers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Split method -->
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Split method" android:textSize="12sp" android:textColor="#888888"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardElevation="1dp"
+                android:layout_marginBottom="20dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:paddingStart="16dp" android:paddingEnd="16dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Equal split"
+                        android:textSize="15sp" android:textColor="#1A1A1A"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="∨" android:textSize="16sp" android:textColor="#888888"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Per person preview -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="#E8F5E9"
+                app:cardElevation="0dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:orientation="horizontal" android:gravity="center_vertical"
+                    android:paddingStart="16dp" android:paddingEnd="16dp">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Each person pays"
+                        android:textSize="14sp" android:textColor="#2D7A50"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="🤝" android:textSize="22sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="@drawable/dialog_rounded">
+
+    <!-- Door emoji circle -->
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:cardCornerRadius="36dp"
+        app:cardBackgroundColor="#FDECEA"
+        app:cardElevation="0dp"
+        android:layout_marginBottom="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="🚪"
+            android:textSize="34sp"
+            android:gravity="center"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout?"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:background="@drawable/chip_light_gray"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Are you sure you want to go out?"
+        android:textSize="13sp"
+        android:textColor="#888888"
+        android:layout_marginBottom="28dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStayLoggedIn"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Stay Logged In"
+            android:textSize="13sp"
+            android:textColor="#1B5E3B"
+            android:background="@drawable/btn_green_outline"
+            android:stateListAnimator="@null"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnYesLogout"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Yes, Logout"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/btn_red_rounded"
+            android:stateListAnimator="@null"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+</LinearLayout>

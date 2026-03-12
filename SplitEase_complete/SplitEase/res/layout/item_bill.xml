@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardElevation="2dp"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- Icon -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#F0F8F0"
+            app:cardElevation="0dp"
+            android:layout_marginEnd="14dp">
+            <TextView
+                android:id="@+id/tvBillIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="🍕"
+                android:textSize="24sp"
+                android:gravity="center"/>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Info -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvBillTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pizza night 🍕"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#1B5E3B"/>
+
+            <TextView
+                android:id="@+id/tvBillDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4 people. March 1"
+                android:textSize="12sp"
+                android:textColor="#999999"/>
+        </LinearLayout>
+
+        <!-- Amount + status -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/tvBillAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="₱400"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A"/>
+
+            <TextView
+                android:id="@+id/tvBillStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="settled"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#2D7A50"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

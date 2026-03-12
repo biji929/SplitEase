@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green_primary">#1B5E3B</color>
+    <color name="green_secondary">#2D7A50</color>
+    <color name="green_light">#E8F5E9</color>
+    <color name="red_unpaid">#E53935</color>
+    <color name="chip_bg">#E8F5E9</color>
+    <color name="white">#FFFFFF</color>
+    <color name="text_dark">#1A1A1A</color>
+    <color name="text_gray">#888888</color>
+</resources>
