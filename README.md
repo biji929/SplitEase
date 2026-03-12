@@ -16,4 +16,4 @@ Clone the repository, open it in Android Studio, sync the Gradle files, and pres
 
 ## About
 
-Built by Brixel Jay for CSIT284 — Platform-Based Development Mobile at CIT-U. Sonnet 4.6
+Built by Brixel Jay for CSIT284 — Platform-Based Development Mobile at CIT-U.
