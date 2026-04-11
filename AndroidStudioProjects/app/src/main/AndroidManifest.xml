@@ -28,6 +28,9 @@
         <activity android:name=".HomeActivity" android:exported="false"/>
         <activity android:name=".NewBillActivity" android:exported="false"/>
         <activity android:name=".SplitSummaryActivity" android:exported="false"/>
+        <activity android:name=".ProfileActivity" android:exported="false"/>
+        <activity android:name=".GroupsActivity" android:exported="false"/>
+        <activity android:name=".HistoryActivity" android:exported="false"/>
 
     </application>
 
