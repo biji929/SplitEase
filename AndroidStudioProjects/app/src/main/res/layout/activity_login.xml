@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Split"
+                android:text="@string/split"
                 android:textSize="38sp"
                 android:fontFamily="serif"
                 android:textStyle="bold"
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ease"
+                android:text="@string/ease"
                 android:textSize="38sp"
                 android:fontFamily="serif"
                 android:textStyle="bold"
@@ -114,7 +114,8 @@
                     android:textColor="@color/text_primary"
                     android:layout_marginBottom="24dp"
                     android:importantForAutofill="no"
-                    android:labelFor="@id/labelUsername" />
+                    android:labelFor="@id/labelUsername"
+                    android:hint="@string/email_address_label" />
 
                 <!-- Password Label -->
                 <TextView
@@ -133,18 +134,18 @@
                     android:layout_height="56dp"
                     android:layout_marginBottom="12dp">
 
-                    <EditText
+                     <EditText
                         android:id="@+id/etPassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/input_border"
                         android:paddingHorizontal="20dp"
-                        android:paddingEnd="56dp"
                         android:inputType="textPassword"
                         android:textSize="15sp"
                         android:textColor="@color/text_primary"
                         android:importantForAutofill="no"
-                        android:labelFor="@id/labelPassword" />
+                        android:labelFor="@id/labelPassword"
+                        android:hint="@string/password_label" />
 
                     <ImageButton
                         android:id="@+id/btnTogglePassword"

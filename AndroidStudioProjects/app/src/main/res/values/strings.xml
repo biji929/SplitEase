@@ -84,6 +84,8 @@
     <string name="payment_methods">Payment Methods</string>
     <string name="privacy_security">Privacy &amp; Security</string>
     <string name="logout">Log Out</string>
+    <string name="logout_confirm">Are you sure you want to log out of your account?</string>
+    <string name="cancel">Cancel</string>
     <string name="more">More</string>
     <string name="bills">Bills</string>
     <string name="total">Total</string>
