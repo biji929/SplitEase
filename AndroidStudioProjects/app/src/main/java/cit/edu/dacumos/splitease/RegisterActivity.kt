@@ -10,16 +10,40 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class RegisterActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
+    private val googleSignInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            firebaseAuthWithGoogle(account.idToken!!)
+        } catch (e: ApiException) {
+            Toast.makeText(this, "Google Sign-In failed: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
+        auth = FirebaseAuth.getInstance()
+
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
         val tvSignIn = findViewById<TextView>(R.id.tvSignIn)
         val btnCreateAccount = findViewById<Button>(R.id.btnCreateAccount)
+        val btnGoogle = findViewById<Button>(R.id.btnGoogle)
         val cbTerms = findViewById<CheckBox>(R.id.cbTerms)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val etConfirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
@@ -27,6 +51,11 @@ class RegisterActivity : AppCompatActivity() {
         // Back arrow
         btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Google Sign-In button
+        btnGoogle.setOnClickListener {
+            signInWithGoogle()
         }
 
         // Sign In link at bottom
@@ -90,5 +119,27 @@ class RegisterActivity : AppCompatActivity() {
             etPassword.setSelection(etPassword.text.length)
             etConfirmPassword.setSelection(etConfirmPassword.text.length)
         }
+    }
+
+    private fun signInWithGoogle() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInLauncher.launch(googleSignInClient.signInIntent)
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finishAffinity()
+                } else {
+                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }

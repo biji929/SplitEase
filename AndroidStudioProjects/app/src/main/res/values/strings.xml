@@ -90,4 +90,6 @@
     <string name="bills">Bills</string>
     <string name="total">Total</string>
     <string name="friends">Friends</string>
+    <!-- Replace this with your actual Web Client ID from Firebase Console -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE</string>
 </resources>
