@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import cit.edu.dacumos.splitease.HomeActivity
+import cit.edu.dacumos.splitease.HistoryActivity
+import cit.edu.dacumos.splitease.ProfileActivity
 
 class GroupsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,18 +27,18 @@ class GroupsActivity : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    startActivity(Intent(this, HomeActivity::class.java))
+                    startActivity(Intent(this@GroupsActivity, HomeActivity::class.java))
                     finish()
                     true
                 }
                 R.id.nav_groups -> true
                 R.id.nav_activity -> {
-                    startActivity(Intent(this, HistoryActivity::class.java))
+                    startActivity(Intent(this@GroupsActivity, HistoryActivity::class.java))
                     finish()
                     true
                 }
                 R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    startActivity(Intent(this@GroupsActivity, ProfileActivity::class.java))
                     finish()
                     true
                 }

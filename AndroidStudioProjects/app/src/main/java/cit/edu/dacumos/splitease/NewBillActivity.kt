@@ -4,19 +4,28 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class NewBillActivity : AppCompatActivity() {
     private lateinit var etAmount: EditText
+    private lateinit var etBillTitle: EditText
     private lateinit var tvEachPersonPays: TextView
-    private var numPeople = 1 // Starting with just "ME"
+    private var numPeople = 1 
+    private var selectedCategory = "General"
 
     private val participants = mutableListOf<String>("Me")
 
@@ -25,6 +34,7 @@ class NewBillActivity : AppCompatActivity() {
         setContentView(R.layout.activity_new_bill)
 
         etAmount = findViewById(R.id.etAmount)
+        etBillTitle = findViewById(R.id.etBillTitle)
         tvEachPersonPays = findViewById(R.id.tvEachPersonPays)
 
         findViewById<ImageButton>(R.id.btnClose).setOnClickListener {
@@ -32,32 +42,13 @@ class NewBillActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btnSave).setOnClickListener {
-            val amountStr = etAmount.text.toString()
-            if (amountStr.isNotEmpty()) {
-                val bill = Bill(
-                    title = "Bill ${BillRepository.getBills().size + 1}", // Simple title for now
-                    amount = amountStr.toDouble(),
-                    category = "General",
-                    date = "Today, " + java.text.SimpleDateFormat("hh:mm a", java.util.Locale.getDefault()).format(java.util.Date()),
-                    participants = participants.toList()
-                )
-                BillRepository.addBill(bill)
-                Toast.makeText(this, "Bill saved successfully! ✅", Toast.LENGTH_SHORT).show()
-                
-                val intent = Intent(this, SplitSummaryActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Please enter an amount", Toast.LENGTH_SHORT).show()
-            }
+            saveBill()
         }
 
         findViewById<Button>(R.id.btnSplitBill).setOnClickListener {
-            val intent = Intent(this, SplitSummaryActivity::class.java)
-            startActivity(intent)
+            saveBill()
         }
 
-        // Make amount calculation functional
         etAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -66,17 +57,17 @@ class NewBillActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Category Chips logic
-        val chips = listOf(
-            findViewById<CardView>(R.id.chipFood),
-            findViewById<CardView>(R.id.chipTransport),
-            findViewById<CardView>(R.id.chipStay),
-            findViewById<CardView>(R.id.chipFun)
+        val chips = mapOf(
+            findViewById<CardView>(R.id.chipFood) to "Food",
+            findViewById<CardView>(R.id.chipTransport) to "Transport",
+            findViewById<CardView>(R.id.chipStay) to "Stay",
+            findViewById<CardView>(R.id.chipFun) to "Fun"
         )
 
-        chips.forEach { chip ->
+        chips.forEach { (chip, category) ->
             chip.setOnClickListener {
-                updateChipsUI(chip, chips)
+                selectedCategory = category
+                updateChipsUI(chip, chips.keys.toList())
             }
         }
 
@@ -89,11 +80,34 @@ class NewBillActivity : AppCompatActivity() {
         }
     }
 
+    private fun saveBill() {
+        val amountStr = etAmount.text.toString()
+        val titleStr = etBillTitle.text.toString().trim()
+        
+        if (amountStr.isNotEmpty()) {
+            val bill = Bill(
+                title = if (titleStr.isNotEmpty()) titleStr else "Bill ${BillRepository.getBills().size + 1}",
+                amount = amountStr.toDouble(),
+                category = selectedCategory,
+                date = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date()),
+                participants = participants.toList()
+            )
+            BillRepository.addBill(bill)
+            Toast.makeText(this@NewBillActivity, "Bill saved successfully! ✅", Toast.LENGTH_SHORT).show()
+            
+            val intent = Intent(this@NewBillActivity, SplitSummaryActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            Toast.makeText(this@NewBillActivity, "Please enter an amount", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun showAddPersonDialog() {
-        val builder = android.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this@NewBillActivity)
         builder.setTitle("Add Person")
 
-        val input = EditText(this)
+        val input = EditText(this@NewBillActivity)
         input.hint = "Enter name"
         input.setPadding(48, 32, 48, 32)
         builder.setView(input)
@@ -113,22 +127,22 @@ class NewBillActivity : AppCompatActivity() {
 
     private fun showSplitMethodDialog() {
         val methods = arrayOf("Equal split", "Percentage", "Exact amounts")
-        val builder = android.app.AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this@NewBillActivity)
         builder.setTitle("Select Split Method")
         builder.setItems(methods) { _, which ->
             val selectedMethod = methods[which]
             findViewById<TextView>(R.id.tvSplitMethod).text = selectedMethod
-            Toast.makeText(this, "Method changed to $selectedMethod", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@NewBillActivity, "Method changed to $selectedMethod", Toast.LENGTH_SHORT).show()
         }
         builder.show()
     }
 
     private fun addPersonToUI(name: String) {
-        val container = findViewById<android.widget.LinearLayout>(R.id.layoutParticipants)
+        val container = findViewById<LinearLayout>(R.id.layoutParticipants)
         val addButton = findViewById<CardView>(R.id.btnAddPerson)
 
-        val newPersonCard = CardView(this).apply {
-            layoutParams = android.widget.LinearLayout.LayoutParams(
+        val newPersonCard = CardView(this@NewBillActivity).apply {
+            layoutParams = LinearLayout.LayoutParams(
                 (48 * resources.displayMetrics.density).toInt(),
                 (48 * resources.displayMetrics.density).toInt()
             ).apply {
@@ -136,18 +150,17 @@ class NewBillActivity : AppCompatActivity() {
             }
             radius = 14 * resources.displayMetrics.density
             cardElevation = 0f
-            setCardBackgroundColor(getColor(R.color.green_dark))
+            setCardBackgroundColor(getColor(R.color.brand_green))
         }
 
-        val textView = TextView(this).apply {
-            layoutParams = android.widget.FrameLayout.LayoutParams(
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+        val textView = TextView(this@NewBillActivity).apply {
+            layoutParams = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
             )
-            // Use first two letters of name as initials
             text = if (name.length >= 2) name.substring(0, 2).uppercase() else name.uppercase()
             setTextColor(getColor(R.color.white))
-            gravity = android.view.Gravity.CENTER
+            gravity = Gravity.CENTER
             setTypeface(null, android.graphics.Typeface.BOLD)
         }
 

@@ -9,22 +9,22 @@ data class Bill(
 )
 
 object BillRepository {
-    private val bills = mutableListOf<Bill>()
+    private val billsList = mutableListOf<Bill>()
 
     fun addBill(bill: Bill) {
-        bills.add(0, bill) // Add to top
+        billsList.add(0, bill) // Add to top
     }
 
     fun getBills(): List<Bill> {
-        return bills
+        return billsList
     }
 
     fun getLatestBill(): Bill? {
-        return bills.firstOrNull()
+        return billsList.firstOrNull()
     }
 
     fun getTotalOwed(): Double {
         // Mock logic for demo
-        return bills.sumOf { it.amount / 2 } 
+        return billsList.sumOf { it.amount / 2 }
     }
 }

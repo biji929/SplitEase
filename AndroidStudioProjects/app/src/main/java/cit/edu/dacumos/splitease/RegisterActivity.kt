@@ -11,6 +11,9 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import cit.edu.dacumos.splitease.R
+import cit.edu.dacumos.splitease.HomeActivity
+import cit.edu.dacumos.splitease.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -33,7 +36,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Google Mock Sign-In
         btnGoogle.setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            startActivity(Intent(this@RegisterActivity, HomeActivity::class.java))
             finishAffinity()
         }
 
@@ -74,14 +77,26 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             if (!cbTerms.isChecked) {
-                Toast.makeText(this, "Please agree to the Terms of Service", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegisterActivity, "Please agree to the Terms of Service", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Success Mockup
-            Toast.makeText(this, "Account created!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, HomeActivity::class.java))
-            finishAffinity()
+            // Success Mockup - Saving to SharedPreferences
+            val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+            prefs.edit().apply {
+                // Just save the credentials, don't log in yet
+                putString("registeredEmail", email)
+                putString("registeredPassword", password)
+                putString("userName", email.substringBefore("@"))
+                apply()
+            }
+
+            Toast.makeText(this@RegisterActivity, "Account created! Please sign in.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+            // Clear top to avoid backstack issues
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(intent)
+            finish()
         }
 
         // Toggle password visibility

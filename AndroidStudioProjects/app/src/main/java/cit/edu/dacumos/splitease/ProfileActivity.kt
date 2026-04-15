@@ -10,15 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import java.util.Locale
 
 class ProfileActivity : AppCompatActivity() {
-
-    // ── Mock data (swap in your real ViewModel / repository later) ───────────
-    private val userName     = "Brixel Jay Dacumos"
-    private val userEmail    = "brixeljay@email.com"
-    private val billsCount   = 18
-    private val splitTotal   = "₱12k"
-    private val friendsCount = 7
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +22,12 @@ class ProfileActivity : AppCompatActivity() {
         bindMenuRows()
     }
 
-    // ── Header ────────────────────────────────────────────────────────────────
-
     private fun bindHeader() {
+        // Retrieve user info from SharedPreferences
+        val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+        val userName = prefs.getString("userName", "User") ?: "User"
+        val userEmail = prefs.getString("userEmail", "") ?: ""
+
         findViewById<View>(R.id.btnBack).setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
@@ -38,16 +35,24 @@ class ProfileActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvAvatarInitials).text = getInitials(userName)
         findViewById<TextView>(R.id.tvProfileName).text    = userName
         findViewById<TextView>(R.id.tvProfileEmail).text   = userEmail
-        findViewById<TextView>(R.id.tvBillsCount).text     = billsCount.toString()
-        findViewById<TextView>(R.id.tvSplitTotal).text     = splitTotal
-        findViewById<TextView>(R.id.tvFriendsCount).text   = friendsCount.toString()
+        
+        // Dynamic Stats from Repository
+        val bills = BillRepository.getBills()
+        findViewById<TextView>(R.id.tvBillsCount).text     = bills.size.toString()
+        val totalOwed = BillRepository.getTotalOwed()
+        
+        val displayAmount = if (totalOwed >= 1000) {
+            String.format(Locale.getDefault(), "₱%.1fk", totalOwed / 1000.0)
+        } else {
+            String.format(Locale.getDefault(), "₱%.0f", totalOwed)
+        }
+        findViewById<TextView>(R.id.tvSplitTotal).text     = displayAmount
+        findViewById<TextView>(R.id.tvFriendsCount).text   = "0"
 
         findViewById<View>(R.id.ivMoreOptions).setOnClickListener {
             showMoreOptionsMenu()
         }
     }
-
-    // ── Menu rows ─────────────────────────────────────────────────────────────
 
     private data class MenuRowConfig(
         val viewId:      Int,
@@ -103,29 +108,18 @@ class ProfileActivity : AppCompatActivity() {
 
         for (row in rows) {
             val rootView = findViewById<View>(row.viewId) ?: continue
-
-            // Bind icon drawable
             rootView.findViewById<ImageView>(R.id.ivMenuIcon)
                 ?.setImageResource(row.iconRes)
-
-            // Bind icon card background color
             rootView.findViewById<CardView>(R.id.cardMenuIconBg)
                 ?.setCardBackgroundColor(row.iconBgColor)
-
-            // Bind label text + color
             rootView.findViewById<TextView>(R.id.tvMenuLabel)?.apply {
                 text = row.label
                 setTextColor(row.labelColor)
             }
-
-            // Row click
             rootView.setOnClickListener { row.onClick() }
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
-    /** Returns up to 2 uppercase initials from a full name. */
     private fun getInitials(name: String): String {
         val parts = name.trim().split(" ").filter { it.isNotEmpty() }
         return when {
@@ -136,26 +130,30 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun toast(msg: String) =
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@ProfileActivity, msg, Toast.LENGTH_SHORT).show()
 
     private fun showMoreOptionsMenu() {
         val options = arrayOf("Share profile", "Help & support", "About SplitEase")
-        AlertDialog.Builder(this)
+        AlertDialog.Builder(this@ProfileActivity)
             .setItems(options) { _, i -> toast(options[i]) }
             .show()
     }
 
     private fun confirmLogout() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
-        val dialog = AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this@ProfileActivity)
             .setView(dialogView)
             .create()
 
         dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         dialogView.findViewById<Button>(R.id.btnYesLogout).setOnClickListener {
+            // Clear all SharedPreferences on logout
+            val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+            prefs.edit().clear().apply()
+
             dialog.dismiss()
-            val intent = Intent(this, LoginActivity::class.java).apply {
+            val intent = Intent(this@ProfileActivity, LoginActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
             startActivity(intent)

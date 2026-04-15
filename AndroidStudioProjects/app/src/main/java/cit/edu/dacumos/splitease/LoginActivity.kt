@@ -9,11 +9,23 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import cit.edu.dacumos.splitease.R
+import cit.edu.dacumos.splitease.HomeActivity
+import cit.edu.dacumos.splitease.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // AUTO-LOGIN: if already logged in, skip to Home
+        val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+        if (prefs.getBoolean("isLoggedIn", false)) {
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_login)
 
         val etEmail = findViewById<EditText>(R.id.etUsername)
@@ -25,7 +37,12 @@ class LoginActivity : AppCompatActivity() {
 
         // Google Sign-In button (Modified to mock login)
         findViewById<Button>(R.id.btnGoogle).setOnClickListener {
-            startActivity(Intent(this, HomeActivity::class.java))
+            prefs.edit()
+                .putBoolean("isLoggedIn", true)
+                .putString("userEmail", "google@gmail.com")
+                .putString("userName", "Google User")
+                .apply()
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
             finishAffinity()
         }
 
@@ -51,13 +68,19 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Successful Login Mockup
-            startActivity(Intent(this, HomeActivity::class.java))
+            // Save login session to SharedPreferences
+            prefs.edit()
+                .putBoolean("isLoggedIn", true)
+                .putString("userEmail", email)
+                .putString("userName", email.substringBefore("@"))
+                .apply()
+
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
             finishAffinity()
         }
 
         findViewById<TextView>(R.id.tvCreateAccount).setOnClickListener {
-            startActivity(Intent(this, RegisterActivity::class.java))
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         }
 
         var isPasswordVisible = false

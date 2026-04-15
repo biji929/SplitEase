@@ -2,48 +2,74 @@ package cit.edu.dacumos.splitease
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.LinearLayout
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.Locale
+import cit.edu.dacumos.splitease.R
+import cit.edu.dacumos.splitease.GroupsActivity
+import cit.edu.dacumos.splitease.HistoryActivity
+import cit.edu.dacumos.splitease.ProfileActivity
+import cit.edu.dacumos.splitease.NewBillActivity
+import cit.edu.dacumos.splitease.BillRepository
+import cit.edu.dacumos.splitease.BillAdapter
 
 class HomeActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        setupUI()
-        updateStats()
+        setupHeader()
         setupRecyclerView()
-    }
-
-    override fun onResume() {
-        super.onResume()
+        setupBottomNavigation()
+        setupAddBill()
         updateStats()
-        updateRecyclerView()
     }
 
-    private fun setupUI() {
-        findViewById<LinearLayout>(R.id.fabAddBill).setOnClickListener {
-            startActivity(Intent(this, NewBillActivity::class.java))
-        }
+    private fun setupHeader() {
+        val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+        val userName = prefs.getString("userName", "User") ?: "User"
 
-        findViewById<BottomNavigationView>(R.id.bottomNav).setOnItemSelectedListener { item ->
+        val tvUserName = findViewById<TextView>(R.id.tvUserName)
+        val tvAvatar = findViewById<TextView>(R.id.tvAvatar)
+        
+        tvUserName.text = userName
+        tvAvatar.text = if (userName.isNotEmpty()) userName.take(1).uppercase() else "U"
+    }
+
+    private fun setupRecyclerView() {
+        val rvBills = findViewById<RecyclerView>(R.id.rvBills)
+        rvBills.layoutManager = LinearLayoutManager(this@HomeActivity)
+        rvBills.adapter = BillAdapter(BillRepository.getBills())
+    }
+
+    private fun updateStats() {
+        val totalOwed = BillRepository.getTotalOwed()
+        findViewById<TextView>(R.id.tvOwedAmount).text = String.format(Locale.getDefault(), "₱%.2f", totalOwed)
+        findViewById<TextView>(R.id.tvNetAmount).text = String.format(Locale.getDefault(), "₱%.2f", totalOwed)
+    }
+
+    private fun setupBottomNavigation() {
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNav.selectedItemId = R.id.nav_home
+
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true
                 R.id.nav_groups -> {
-                    startActivity(Intent(this, GroupsActivity::class.java))
+                    startActivity(Intent(this@HomeActivity, GroupsActivity::class.java))
                     true
                 }
                 R.id.nav_activity -> {
-                    startActivity(Intent(this, HistoryActivity::class.java))
+                    startActivity(Intent(this@HomeActivity, HistoryActivity::class.java))
                     true
                 }
                 R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
+                    startActivity(Intent(this@HomeActivity, ProfileActivity::class.java))
                     true
                 }
                 else -> false
@@ -51,29 +77,16 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateStats() {
-        val bills = BillRepository.getBills()
-        val totalOwed = bills.sumOf { bill ->
-            val perPerson = bill.amount / bill.participants.size
-            if (bill.participants.contains("Me")) {
-                perPerson * (bill.participants.size - 1)
-            } else {
-                0.0
-            }
+    private fun setupAddBill() {
+        findViewById<View>(R.id.fabAddBill).setOnClickListener {
+            startActivity(Intent(this@HomeActivity, NewBillActivity::class.java))
         }
-
-        findViewById<TextView>(R.id.tvOwedAmount).text = String.format(Locale.getDefault(), "₱%.0f", totalOwed)
-        findViewById<TextView>(R.id.tvNetAmount).text = String.format(Locale.getDefault(), "₱%.0f", totalOwed)
     }
 
-    private fun setupRecyclerView() {
-        val rvBills = findViewById<RecyclerView>(R.id.rvBills)
-        rvBills.layoutManager = LinearLayoutManager(this)
-        updateRecyclerView()
-    }
-
-    private fun updateRecyclerView() {
-        val rvBills = findViewById<RecyclerView>(R.id.rvBills)
-        rvBills.adapter = BillAdapter(BillRepository.getBills())
+    override fun onResume() {
+        super.onResume()
+        // Refresh data when returning to Home
+        updateStats()
+        setupRecyclerView()
     }
 }

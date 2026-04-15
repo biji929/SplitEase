@@ -1,13 +1,14 @@
 package cit.edu.dacumos.splitease
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.util.Locale
+import java.util.*
 
 class SplitSummaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,15 +21,15 @@ class SplitSummaryActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         findViewById<ImageButton>(R.id.btnMore).setOnClickListener {
-            Toast.makeText(this, "More options coming soon!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@SplitSummaryActivity, "More options coming soon!", Toast.LENGTH_SHORT).show()
         }
 
-        findViewById<android.widget.Button>(R.id.btnSendReminder).setOnClickListener {
-            Toast.makeText(this, "Reminders sent to all unpaid members! 🔔", Toast.LENGTH_SHORT).show()
+        findViewById<Button>(R.id.btnSendReminder).setOnClickListener {
+            Toast.makeText(this@SplitSummaryActivity, "Reminders sent to all unpaid members! 🔔", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -36,7 +37,7 @@ class SplitSummaryActivity : AppCompatActivity() {
         val latestBill = BillRepository.getLatestBill() ?: return
 
         // Set Bill Header
-        val icon = when (latestBill.category.lowercase()) {
+        val icon = when (latestBill.category.lowercase(Locale.getDefault())) {
             "food" -> "🍕"
             "transport" -> "🚗"
             "stay" -> "🏠"
@@ -48,7 +49,7 @@ class SplitSummaryActivity : AppCompatActivity() {
 
         // Set Stats
         val numPeople = latestBill.participants.size
-        val perPerson = latestBill.amount / numPeople
+        val perPerson = if (numPeople > 0) latestBill.amount / numPeople else 0.0
         
         findViewById<TextView>(R.id.tvTotal).text = String.format(Locale.getDefault(), "₱%.2f", latestBill.amount)
         findViewById<TextView>(R.id.tvPerPerson).text = String.format(Locale.getDefault(), "₱%.2f", perPerson)
@@ -59,7 +60,7 @@ class SplitSummaryActivity : AppCompatActivity() {
 
         // Set up Members List
         val rvMembers = findViewById<RecyclerView>(R.id.rvMembers)
-        rvMembers.layoutManager = LinearLayoutManager(this)
+        rvMembers.layoutManager = LinearLayoutManager(this@SplitSummaryActivity)
         
         val memberPayments = latestBill.participants.map { name ->
             MemberPayment(
