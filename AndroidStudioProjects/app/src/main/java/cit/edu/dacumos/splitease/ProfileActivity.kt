@@ -16,9 +16,9 @@ class ProfileActivity : AppCompatActivity() {
     // ── Mock data (swap in your real ViewModel / repository later) ───────────
     private val userName     = "Brixel Jay Dacumos"
     private val userEmail    = "brixeljay@email.com"
-    private val billsCount   = 18
-    private val splitTotal   = "₱12k"
-    private val friendsCount = 7
+    private val billsCount   = 0
+    private val splitTotal   = "₱0k"
+    private val friendsCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +35,12 @@ class ProfileActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        findViewById<TextView>(R.id.tvAvatarInitials).text = getInitials(userName)
-        findViewById<TextView>(R.id.tvProfileName).text    = userName
-        findViewById<TextView>(R.id.tvProfileEmail).text   = userEmail
-        findViewById<TextView>(R.id.tvBillsCount).text     = billsCount.toString()
-        findViewById<TextView>(R.id.tvSplitTotal).text     = splitTotal
-        findViewById<TextView>(R.id.tvFriendsCount).text   = friendsCount.toString()
+            findViewById<TextView>(R.id.tvAvatarInitials).text = getInitials(userName)
+            findViewById<TextView>(R.id.tvProfileName).text    = userName
+            findViewById<TextView>(R.id.tvProfileEmail).text   = userEmail
+        findViewById<TextView>(R.id.tvBillsCount).setText(billsCount.toString())
+            findViewById<TextView>(R.id.tvSplitTotal).text     = splitTotal
+            findViewById<TextView>(R.id.tvFriendsCount).text   = friendsCount.toString()
 
         findViewById<View>(R.id.ivMoreOptions).setOnClickListener {
             showMoreOptionsMenu()

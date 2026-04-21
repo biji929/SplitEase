@@ -110,7 +110,7 @@
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="18" />
+                            tools:text="0" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="₱12k" />
+                            tools:text="₱0" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -154,13 +154,13 @@
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             android:textStyle="bold"
-                            tools:text="7" />
+                            tools:text="0" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/friends"
                             android:textColor="#B8E6C8"
-                            android:textSize="12sp" />
+                                android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
