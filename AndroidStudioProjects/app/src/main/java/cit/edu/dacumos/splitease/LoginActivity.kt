@@ -8,36 +8,22 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-
-    private val googleSignInLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            firebaseAuthWithGoogle(account.idToken!!)
-        } catch (e: ApiException) {
-            Toast.makeText(this, "Google Sign-In failed: ${e.message}", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
-        auth = FirebaseAuth.getInstance()
+        // AUTO-LOGIN
+        val prefs = getSharedPreferences("SplitEasePrefs", MODE_PRIVATE)
+        if (prefs.getBoolean("isLoggedIn", false)) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+            return
+        }
+
+        setContentView(R.layout.activity_login)
 
         val etEmail = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
@@ -46,9 +32,14 @@ class LoginActivity : AppCompatActivity() {
 
         btnBack.setOnClickListener { finish() }
 
-        // Google Sign-In button
         findViewById<Button>(R.id.btnGoogle).setOnClickListener {
-            signInWithGoogle()
+            prefs.edit()
+                .putBoolean("isLoggedIn", true)
+                .putString("userEmail", "google@gmail.com")
+                .putString("userName", "Google User")
+                .apply()
+            startActivity(Intent(this, HomeActivity::class.java))
+            finishAffinity()
         }
 
         findViewById<Button>(R.id.btnSignIn).setOnClickListener {
@@ -73,6 +64,12 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            prefs.edit()
+                .putBoolean("isLoggedIn", true)
+                .putString("userEmail", email)
+                .putString("userName", email.substringBefore("@"))
+                .apply()
+
             startActivity(Intent(this, HomeActivity::class.java))
             finishAffinity()
         }
@@ -93,27 +90,5 @@ class LoginActivity : AppCompatActivity() {
             }
             etPassword.setSelection(etPassword.text.length)
         }
-    }
-
-    private fun signInWithGoogle() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val googleSignInClient = GoogleSignIn.getClient(this, gso)
-        googleSignInLauncher.launch(googleSignInClient.signInIntent)
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    finishAffinity()
-                } else {
-                    Toast.makeText(this, "Authentication failed", Toast.LENGTH_SHORT).show()
-                }
-            }
     }
 }
