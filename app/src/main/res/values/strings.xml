@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">SplitEase</string>
+    <string name="split">Split</string>
+    <string name="ease">Ease</string>
+
+    <!-- Splash Screen -->
+    <string name="tagline">SPLIT BILLS EFFORTLESSLY</string>
+    <string name="category_food">🍕  Food</string>
+    <string name="category_ride">🚗  Ride</string>
+    <string name="category_rent">🏠  Rent</string>
+    <string name="join_now">Join Now</string>
+    <string name="already_have_account">Already have an account? </string>
+    <string name="login">Login</string>
+
+    <!-- Login Screen -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="full_name_label">FULL NAME</string>
+    <string name="password_label">PASSWORD</string>
+    <string name="forgot_password">FORGOT PASSWORD?</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="new_to_splitease">New to SplitEase? </string>
+    <string name="create_account">Create account</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="back">Back</string>
+    <string name="toggle_password">Toggle Password</string>
+    <string name="full_name">FULL NAME</string>
+    <string name="password">PASSWORD</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="sign_in_v2">Sign in</string>
+    <string name="error_enter_name">Enter your name</string>
+    <string name="error_enter_password">Enter your password</string>
+    <string name="error_password_short">Password too short</string>
+    <string name="welcome_back_toast">Welcome back! 👋</string>
+    <string name="invalid_credentials">Invalid name or password</string>
+    <string name="password_reset_sent">Password reset sent!</string>
+
+    <!-- Register Screen -->
+    <string name="join_message">Join SplitEase to start splitting bills with friends</string>
+    <string name="email_address_label">EMAIL ADDRESS</string>
+    <string name="phone_number_label">PHONE NUMBER</string>
+    <string name="confirm_password_label">CONFIRM</string>
+    <string name="terms_agreement">I agree to the Terms of Service and Privacy Policy</string>
+    <string name="already_have_account_v2">Already have an account?</string>
+    <string name="error_invalid_email">Please enter a valid Gmail address</string>
+    <string name="error_enter_email">Enter your email</string>
+    <string name="error_enter_phone">Enter your phone number</string>
+    <string name="error_passwords_dont_match">Passwords do not match</string>
+    <string name="account_created">Account created successfully!</string>
+
+    <!-- Home Screen -->
+    <string name="greeting">Good day! 👋</string>
+    <string name="user_name_placeholder">Brixel Jay</string>
+    <string name="user_avatar_placeholder">BJ</string>
+    <string name="owed_amount_placeholder">₱300</string>
+    <string name="you_re_owed">you\'re owed</string>
+    <string name="owe_amount_placeholder">₱0</string>
+    <string name="you_owe">you owe</string>
+    <string name="net_balance">Net balance</string>
+    <string name="recent_bills">Recent bills</string>
+    <string name="add_bill_desc">Add new bill</string>
+
+    <!-- New Bill Screen -->
+    <string name="new_bill">New bill</string>
+    <string name="save">Save</string>
+    <string name="bill_title_label">Bill title</string>
+    <string name="total_amount_label">Total amount</string>
+    <string name="equal_split">Equal split</string>
+    <string name="each_person_pays">Each person pays</string>
+
+    <!-- Split Summary Screen -->
+    <string name="split_summary">Split Summary</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="send_reminder">🔔 Send reminder</string>
+    <string name="total_caps">TOTAL</string>
+    <string name="per_person_caps">PER PERSON</string>
+    <string name="unpaid_caps">UNPAID</string>
+    <string name="payment_status_caps">PAYMENT STATUS</string>
+
+    <!-- Profile Screen -->
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="privacy_security">Privacy &amp; Security</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_confirm">Are you sure you want to log out of your account?</string>
+    <string name="cancel">Cancel</string>
+    <string name="more">More</string>
+    <string name="bills">Bills</string>
+    <string name="total">Total</string>
+    <string name="friends">Friends</string>
+    <!-- Replace this with your actual Web Client ID from Firebase Console -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE</string>
+</resources>

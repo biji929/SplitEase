@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "342191826968",
+    "project_id": "splitease-d8e07",
+    "storage_bucket": "splitease-d8e07.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342191826968:android:03245a3c1d05ca48ab7b6d",
+        "android_client_info": {
+          "package_name": "cit.edu.dacumos.splitease"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342191826968-4m1ol3kmesnn1hqdja3o0914bfmm0or2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cit.edu.dacumos.splitease",
+            "certificate_hash": "145a4603749e5cbd3da254c548c969867044a292"
+          }
+        },
+        {
+          "client_id": "342191826968-53fnid10gshni7hikra6qk65alirsl65.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV96BCSqquoKx7abpX5TSn4IuoJNvvA8I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342191826968-53fnid10gshni7hikra6qk65alirsl65.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
