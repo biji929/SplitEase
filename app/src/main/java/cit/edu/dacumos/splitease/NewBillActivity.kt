@@ -85,14 +85,22 @@ class NewBillActivity : AppCompatActivity() {
         val titleStr = etBillTitle.text.toString().trim()
         
         if (amountStr.isNotEmpty()) {
+            val amount = amountStr.toDouble()
+            val billTitle = if (titleStr.isNotEmpty()) titleStr else "Bill ${BillRepository.getBills().size + 1}"
+            
             val bill = Bill(
-                title = if (titleStr.isNotEmpty()) titleStr else "Bill ${BillRepository.getBills().size + 1}",
-                amount = amountStr.toDouble(),
+                title = billTitle,
+                amount = amount,
                 category = selectedCategory,
                 date = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date()),
                 participants = participants.toList()
             )
             BillRepository.addBill(bill)
+            
+            // Automatically update Group expenses if a group name matches the title or is specified
+            // For now, let's show a dialog to pick a group or just match by title prefix
+            GroupRepository.updateGroupExpense(selectedCategory, amount) 
+
             Toast.makeText(this@NewBillActivity, "Bill saved successfully! ✅", Toast.LENGTH_SHORT).show()
             
             val intent = Intent(this@NewBillActivity, SplitSummaryActivity::class.java)
@@ -174,7 +182,8 @@ class NewBillActivity : AppCompatActivity() {
         if (amountStr.isNotEmpty()) {
             try {
                 val amount = amountStr.toDouble()
-                val eachPays = amount / numPeople
+                val participantsCount = participants.size
+                val eachPays = if (participantsCount > 0) amount / participantsCount else 0.0
                 tvEachPersonPays.text = String.format(Locale.getDefault(), "Each person pays ₱%.2f", eachPays)
             } catch (e: Exception) {
                 tvEachPersonPays.text = "Each person pays ₱0.00"

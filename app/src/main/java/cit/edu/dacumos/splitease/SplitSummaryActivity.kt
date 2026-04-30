@@ -66,10 +66,31 @@ class SplitSummaryActivity : AppCompatActivity() {
             MemberPayment(
                 name = if (name == "Me") "Me (you)" else name,
                 amount = perPerson,
-                isPaid = name == "Me" // Owner is marked as paid
+                isPaid = false // Set everyone to unpaid by default
             )
         }
         
-        rvMembers.adapter = MemberAdapter(memberPayments)
+        val adapter = MemberAdapter(memberPayments) { position ->
+            val member = memberPayments[position]
+            member.isPaid = !member.isPaid
+            
+            // If the person who paid is "Me", update the global repository
+            if (member.name.contains("Me", ignoreCase = true)) {
+                // We need the bill title. Let's assume we can get it from the intent or a repository.
+                // For this demo, we'll mark the latest bill as paid by "Me".
+                BillRepository.getLatestBill()?.let { bill ->
+                    BillRepository.markMePaid(bill.title, member.isPaid)
+                }
+            }
+
+            updateUnpaidCount(memberPayments)
+            rvMembers.adapter?.notifyItemChanged(position)
+        }
+        rvMembers.adapter = adapter
+    }
+
+    private fun updateUnpaidCount(members: List<MemberPayment>) {
+        val unpaidCount = members.count { !it.isPaid }
+        findViewById<TextView>(R.id.tvUnpaidCount).text = unpaidCount.toString()
     }
 }

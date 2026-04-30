@@ -3,6 +3,7 @@ package cit.edu.dacumos.splitease
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.Locale
@@ -10,10 +11,13 @@ import java.util.Locale
 data class MemberPayment(
     val name: String,
     val amount: Double,
-    val isPaid: Boolean
+    var isPaid: Boolean
 )
 
-class MemberAdapter(private val members: List<MemberPayment>) : RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
+class MemberAdapter(
+    private val members: List<MemberPayment>,
+    private val onPaidClick: (Int) -> Unit
+) : RecyclerView.Adapter<MemberAdapter.MemberViewHolder>() {
 
     class MemberViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvInitials: TextView = view.findViewById(R.id.tvMemberInitials)
@@ -21,6 +25,7 @@ class MemberAdapter(private val members: List<MemberPayment>) : RecyclerView.Ada
         val tvStatus: TextView = view.findViewById(R.id.tvPaymentStatus)
         val tvAmount: TextView = view.findViewById(R.id.tvMemberAmount)
         val tvStatusBadge: TextView = view.findViewById(R.id.tvStatusBadge)
+        val btnPaid: Button = view.findViewById(R.id.btnMarkAsPaid)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder {
@@ -39,10 +44,20 @@ class MemberAdapter(private val members: List<MemberPayment>) : RecyclerView.Ada
             holder.tvStatus.text = "paid"
             holder.tvStatusBadge.text = "PAID"
             holder.tvStatusBadge.setTextColor(holder.itemView.context.getColor(R.color.status_settled))
+            holder.btnPaid.text = "Undo"
+            holder.btnPaid.setTextColor(holder.itemView.context.getColor(R.color.text_secondary))
         } else {
             holder.tvStatus.text = "unpaid"
             holder.tvStatusBadge.text = "UNPAID"
             holder.tvStatusBadge.setTextColor(holder.itemView.context.getColor(R.color.red_danger))
+            
+            // Check if it's the current user
+            holder.btnPaid.text = if (member.name.contains("Me", ignoreCase = true)) "I Paid" else "Paid?"
+            holder.btnPaid.setTextColor(holder.itemView.context.getColor(R.color.green_dark))
+        }
+
+        holder.btnPaid.setOnClickListener {
+            onPaidClick(position)
         }
     }
 

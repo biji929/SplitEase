@@ -89,6 +89,19 @@
                 android:textAllCaps="true"
                 android:letterSpacing="0.05"
                 tools:text="paid" />
+
+            <Button
+                android:id="@+id/btnMarkAsPaid"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="8dp"
+                android:text="Paid?"
+                android:textSize="10sp"
+                android:textColor="@color/green_dark"
+                tools:visibility="visible"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -45,8 +45,16 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvGroups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:listitem="@layout/item_group" />
+
             <!-- Empty State for Groups -->
             <LinearLayout
+                android:id="@+id/layoutEmptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -74,18 +82,20 @@
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"
                     android:gravity="center"/>
-                <Button
-                    android:id="@+id/btnCreateGroup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
-                    android:paddingHorizontal="32dp"
-                    android:text="+ Create Group"
-                    android:background="@drawable/btn_green_rounded"
-                    android:textColor="@color/white"
-                    android:textAllCaps="false"
-                    android:textStyle="bold"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCreateGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:layout_gravity="center"
+                android:paddingHorizontal="32dp"
+                android:text="+ Create Group"
+                android:background="@drawable/btn_green_rounded"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textStyle="bold"/>
         </LinearLayout>
     </ScrollView>
 
